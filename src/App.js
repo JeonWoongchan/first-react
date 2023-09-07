@@ -8,7 +8,7 @@ function App() {
 
   let post = '강남 우동 맛집';
   // State: 자료를 잠깐 저장함 -> state는 저장된 내용 변경되면 자동 재랜더링 됨 
-  //변수 글제목에 저장됨, 제목변경은 state 변경 도와줌
+  // 변수 글제목에 저장됨, 제목변경은 state 변경 도와줌
   let [글제목, 제목변경] = useState(['남자 코트 추천', '강남 우동맛집', '파이썬독학']); 
   //let [logo, setLogo] = useState(''); // 로고는 변경 잘 안됨 -> 굳이 state 쓸필요없음
   // 자주 변경되는거 미리 state로 빼기
@@ -48,7 +48,7 @@ function App() {
 
   return ( // return 안에는 큰 div 하나 안에 내용 들어감, div 대신 <> </> 사용가능
     <div className="App">
-      <div className="black-nav">
+      <div className="black-nav"> 
         <div>개발 blog</div>
       </div>
       <button onClick={()=>{제목정렬()}}>정렬</button>  {/*onClick={함수명()} 이렇게 쓰면 무한 렌더링됨*/}
@@ -100,6 +100,7 @@ function App() {
 2. return() 안에 html 담기
 3. <함수명></함수명> 으로 사용 
 반복적인 html 축약할때, 큰 페이지들 만들때, 자주 변경되는 것들 만들때*/
+
 function Modal(){
   return(
     <div className="modal">
