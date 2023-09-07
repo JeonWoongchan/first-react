@@ -100,7 +100,6 @@ function App() {
 2. return() 안에 html 담기
 3. <함수명></함수명> 으로 사용 
 반복적인 html 축약할때, 큰 페이지들 만들때, 자주 변경되는 것들 만들때*/
-
 function Modal(){
   return(
     <div className="modal">
