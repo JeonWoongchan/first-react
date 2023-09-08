@@ -1,4 +1,5 @@
 /* eslint-disable */
+//바꿈
 
 import logo from './logo.svg';
 import './App.css';
@@ -16,8 +17,9 @@ function App() {
   // let [a, c] = [1, 2]// a에 1 c에 2 저장
 
   let [따봉, 따봉변경] = useState([0, 1, 2]);
-  //state 변경은 등호로 변경하면 html에 반영안됨, 두번째 매개변수 이용
+  //state 변경은 등호로 변경하면 html에 반영안됨=> 두번째 매개변수 이용
   let [modal, setModal] = useState(false);
+  let [title, setTitle] = useState(0); //모달창 제목
 
   // [1,2,3].map(()=>{
   //   // 배열의 자료 개수 만큼 함수 반복
@@ -36,7 +38,7 @@ function App() {
 
   function 제목정렬(){
     let copy2 = [...글제목];
-    copy2.sort()
+    copy2.sort();
     제목변경(copy2);      
   }
 
@@ -80,7 +82,7 @@ function App() {
         글제목.map((a, i)=>{ //a = 글제목[0], 글제목[1] ...
           return(
             <div className="list" key={i}>
-                <h4 onClick={()=>{setModal(!modal)}}>
+                <h4 onClick={()=>{setModal(true); setTitle(i)}}>
                 {글제목[i]} <span onClick={()=>{따봉업(i)}} style={{cursor: 'pointer'}}>👍</span> {따봉[i]}</h4>
               <p>2월 17일 발행</p>
             </div>
@@ -89,7 +91,7 @@ function App() {
       }
       {
         /*삼항연산자 : if문 대신 사용*/
-        modal == true ? <Modal/> : null
+        modal == true ? <Modal color={'orange'} setModal={setModal} title={title} 글제목={글제목} 제목변경함수={제목변경함수}/> : null
       }
     </div>
   );
@@ -99,13 +101,25 @@ function App() {
 1. function 만들기
 2. return() 안에 html 담기
 3. <함수명></함수명> 으로 사용 
-반복적인 html 축약할때, 큰 페이지들 만들때, 자주 변경되는 것들 만들때*/
-function Modal(){
+반복적인 html 축약할때, 큰 페이지들 만들때, 자주 변경되는 것들 만들때
+4. 컴포넌트 좋긴한데 남발하면 props 써야되서 귀찮아짐
+*/
+
+
+
+function Modal(props){
+  // props : 다른 컴포넌트에 있는 state 못씀 -> props 사용: 부모에서 자식으로 state 전송
+  // 1. 자식 컴포넌트 사용하는 곳 가서 작명={state이름}
+  // 2. props 파라미터 등록 후 props.작명 사용, 거의 작명은 state 쓰는 이름으로 함 
+  // 3. css 스타일, 함수 같은 것도 전송 가능
   return(
-    <div className="modal">
-      <h4>제목</h4>
+    <div className="modal" style={{background : props.color}}>
+      <h4>{props.글제목[props.title]}</h4> {/*title 숫자에 맞는 글제목 출력*/}
       <p>날짜</p>
       <p>상세내용</p>
+      <button onClick={()=>{props.제목변경함수(props.title)}}>
+        글수정</button>
+      <button onClick={()=>props.setModal(false)}>닫기</button>
     </div>
   );
 }
