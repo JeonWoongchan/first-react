@@ -20,32 +20,59 @@ function App() {
   //state 변경은 등호로 변경하면 html에 반영안됨=> 두번째 매개변수 이용
   let [modal, setModal] = useState(false);
   let [title, setTitle] = useState(0); //모달창 제목
-
+  let [입력값, 입력값변경] = useState('');
   // [1,2,3].map(()=>{
   //   // 배열의 자료 개수 만큼 함수 반복
   //   // return 값 배열 안에 넣어줌
-  // })
+  // 
 
   function 제목변경함수(a){
     // 예시1) 제목변경(['여자 코트 추천', '강남 우동맛집', '파이썬독학']);
     // 예시2) 글제목[0] = '여자 코트 추천';
     // 배열/객체 다룰때 복사본 만드는게 좋음
-    let copy1 = [...글제목]; //state 복사할 때 아예 똑같으면 변경 안해줌, ... 은 괄호 벗겨주는 문법
+    let copy = [...글제목]; //state 복사할 때 아예 똑같으면 변경 안해줌, ... 은 괄호 벗겨주는 문법
     // 따라서 state 가 arr/obj 면 독립적인 복사본 만들어서 수정해야됨
-    copy1[a] = '여자 코트 추천'
-    제목변경(copy1);
+    copy[a] = '여자 코트 추천'
+    제목변경(copy);
+  }
+
+  function 글추가(a){
+    let copy = [...글제목];
+    let copy1 = [...따봉];
+    let text = document.getElementById('input').value;
+
+    if(text.trim() != ''){
+      copy.unshift(a);
+      제목변경(copy);
+
+      copy1.unshift(0);
+      따봉변경(copy1);
+    
+      text = '';
+    }
+  }
+
+  function 글삭제(a){
+    let copy = [...글제목];
+    let copy1 = [...따봉];
+
+    copy.splice(a,1);
+    제목변경(copy);
+
+    copy1.splice(a,1);
+    따봉변경(copy1);
   }
 
   function 제목정렬(){
-    let copy2 = [...글제목];
-    copy2.sort();
-    제목변경(copy2);      
+    let copy = [...글제목];
+    copy.sort();
+    제목변경(copy);      
   }
 
   function 따봉업(a){
-    let copy3 = [...따봉];
-    copy3[a] += 1;
-    따봉변경(copy3);
+    let copy = [...따봉];
+    copy[a] += 1;
+    따봉변경(copy);
   }
 
   return ( // return 안에는 큰 div 하나 안에 내용 들어감, div 대신 <> </> 사용가능
@@ -83,15 +110,23 @@ function App() {
           return(
             <div className="list" key={i}>
                 <h4 onClick={()=>{setModal(true); setTitle(i)}}>
-                {글제목[i]} <span onClick={()=>{따봉업(i)}} style={{cursor: 'pointer'}}>👍</span> {따봉[i]}</h4>
-              <p>2월 17일 발행</p>
+                  {/* e.stopPropagation:상위요소로 이벤트 버블링 되는거 막음 */}
+                {글제목[i]} <span onClick={(e)=>{e.stopPropagation(); 따봉업(i)}} style={{cursor: 'pointer'}}>👍</span> {따봉[i]}</h4>
+              <p>{new Date().toString()}</p> {/*date는 toString 해줘야 랜더링됨*/}
+              <button onClick={()=>글삭제(i)}>삭제</button>
             </div>
           )
         })
       }
+      
+      <input id='input' onChange={()=>{console.log('작성중')}}/>
+      <button onClick={(e)=>{글추가(document.getElementById('input').value)}}>작성</button>
+
       {
         /*삼항연산자 : if문 대신 사용*/
-        modal == true ? <Modal color={'orange'} setModal={setModal} title={title} 글제목={글제목} 제목변경함수={제목변경함수}/> : null
+        modal == true 
+        ? <Modal color={'orange'} setModal={setModal} title={title} 글제목={글제목} 제목변경함수={제목변경함수}/> 
+        : null
       }
     </div>
   );
@@ -122,6 +157,26 @@ function Modal(props){
       <button onClick={()=>props.setModal(false)}>닫기</button>
     </div>
   );
+}
+
+//class로 컴포넌트 만들수도 있는데 요즘은 function 많이 씀
+class Modal2 extends React.Component{
+  constructor(props){
+    super(props)
+    // class 컴포넌트에서 state 만드는법
+    this.state = {
+      name : 'kim',
+      age : 20
+    }
+  }
+  render(){
+    return(
+      <div>안녕{this.state.name}
+      {/* //state 변경 */}
+      <button onClick={()=>{this.setState({age : 21})}}>버튼</button>
+      </div>
+    )
+  }
 }
 
 //function IMG(){
